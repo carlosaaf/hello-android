@@ -2,7 +2,7 @@ package br.com.ferreira.hello.data.repo
 
 import br.com.ferreira.hello.data.client.ProfileApiService
 import br.com.ferreira.hello.data.model.ApiCallback
-import br.com.ferreira.hello.data.model.Todo
+import br.com.ferreira.hello.data.model.Profile
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,11 +13,11 @@ class ProfileRepository @Inject constructor(
     private val apiService: ProfileApiService
 ) {
     fun getMessage(id: Long, callback: ApiCallback) =
-        apiService.getTodoById(id)?.enqueue(object : Callback<Todo?> {
-            override fun onResponse(call: Call<Todo?>, response: Response<Todo?>) {
+        apiService.getTodoById(id)?.enqueue(object : Callback<Profile?> {
+            override fun onResponse(call: Call<Profile?>, response: Response<Profile?>) {
                 if (response.isSuccessful) {
-                    response.body()?.let { todo ->
-                        callback.onSuccess(todo.title)
+                    response.body()?.let { profile ->
+                        callback.onSuccess(profile.fullname)
                     }
                 } else {
                     if (response.code() == 404) {
@@ -28,7 +28,7 @@ class ProfileRepository @Inject constructor(
                 }
             }
 
-            override fun onFailure(call: Call<Todo?>, t: Throwable) {
+            override fun onFailure(call: Call<Profile?>, t: Throwable) {
                 t.message?.let {
                     callback.onError(it)
                 }

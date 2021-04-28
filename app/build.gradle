@@ -50,11 +50,11 @@ android {
             dimension "version"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
-            buildConfigField 'String', 'SERVER_URL', '"https://jsonplaceholder.typicode.com/"'
+            buildConfigField 'String', 'SERVER_URL', '"http://10.0.2.2:8080/"'
         }
         prod {
             dimension "version"
-            buildConfigField 'String', 'SERVER_URL', '"https://jsonplaceholder.typicode.com/"'
+            buildConfigField 'String', 'SERVER_URL', '"http://10.0.2.2:8080/"'
         }
     }
 }
