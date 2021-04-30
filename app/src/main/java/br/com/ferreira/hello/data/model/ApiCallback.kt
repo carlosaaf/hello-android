@@ -1,6 +1,6 @@
 package br.com.ferreira.hello.data.model
 
-interface ApiCallback {
-    fun onSuccess(text: String)
+interface ApiCallback<T> {
+    fun onSuccess(value: T)
     fun onError(text: String)
 }

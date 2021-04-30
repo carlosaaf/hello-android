@@ -50,11 +50,13 @@ android {
             dimension "version"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
-            buildConfigField 'String', 'SERVER_URL', '"http://10.0.2.2:8080/"'
+            buildConfigField 'String', 'AUTH_URL', '"http://10.0.2.2:8080/realms/hello/"'
+            buildConfigField 'String', 'SERVER_URL', '"http://10.0.2.2:8090/"'
         }
         prod {
             dimension "version"
-            buildConfigField 'String', 'SERVER_URL', '"http://10.0.2.2:8080/"'
+            buildConfigField 'String', 'AUTH_URL', '"http://10.0.2.2:8080/realms/hello/"'
+            buildConfigField 'String', 'SERVER_URL', '"http://10.0.2.2:8090/"'
         }
     }
 }
@@ -64,6 +66,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.browser:browser:1.3.0'
     //Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

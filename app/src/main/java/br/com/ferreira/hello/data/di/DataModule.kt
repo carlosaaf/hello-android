@@ -1,6 +1,7 @@
 package br.com.ferreira.hello.data.di
 
 import br.com.ferreira.hello.BuildConfig
+import br.com.ferreira.hello.data.client.AuthApiService
 import br.com.ferreira.hello.data.client.ProfileApiService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -13,7 +14,16 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class AuthService
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class HelloService
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -40,7 +50,18 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+    @AuthService
+    fun provideAuthRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.AUTH_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    @Provides
+    @Singleton
+    @HelloService
+    fun provideHelloRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(BuildConfig.SERVER_URL)
             .client(okHttpClient)
@@ -49,6 +70,11 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideProfileApiService(retrofit: Retrofit): ProfileApiService =
+    fun provideAuthApiService(@AuthService retrofit: Retrofit): AuthApiService =
+        retrofit.create(AuthApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProfileApiService(@HelloService retrofit: Retrofit): ProfileApiService =
         retrofit.create(ProfileApiService::class.java)
 }

@@ -12,12 +12,12 @@ import javax.inject.Inject
 class ProfileRepository @Inject constructor(
     private val apiService: ProfileApiService
 ) {
-    fun getMessage(id: Long, callback: ApiCallback) =
+    fun getMessage(id: Long, callback: ApiCallback<Profile>) =
         apiService.getTodoById(id)?.enqueue(object : Callback<Profile?> {
             override fun onResponse(call: Call<Profile?>, response: Response<Profile?>) {
                 if (response.isSuccessful) {
                     response.body()?.let { profile ->
-                        callback.onSuccess(profile.fullname)
+                        callback.onSuccess(profile)
                     }
                 } else {
                     if (response.code() == 404) {
@@ -29,9 +29,7 @@ class ProfileRepository @Inject constructor(
             }
 
             override fun onFailure(call: Call<Profile?>, t: Throwable) {
-                t.message?.let {
-                    callback.onError(it)
-                }
+                t.message?.let(callback::onError)
             }
         })
 }
