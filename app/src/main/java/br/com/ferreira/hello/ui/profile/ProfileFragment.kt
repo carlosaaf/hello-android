@@ -20,6 +20,18 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = ProfileFragmentBinding.inflate(layoutInflater, container, false)
+        viewModel.userId.observe(viewLifecycleOwner, { value ->
+            binding.userId.text = value
+        })
+        viewModel.username.observe(viewLifecycleOwner, { value ->
+            binding.username.text = value
+        })
+        viewModel.fullname.observe(viewLifecycleOwner, { value ->
+            binding.fullname.text = value
+        })
+        viewModel.email.observe(viewLifecycleOwner, { value ->
+            binding.email.text = value
+        })
         viewModel.message.observe(viewLifecycleOwner, { value ->
             binding.message.text = value
         })
@@ -29,7 +41,7 @@ class ProfileFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         activity?.title = "Profile"
-        viewModel.updateMessage()
+        viewModel.updateData()
     }
 
 }
