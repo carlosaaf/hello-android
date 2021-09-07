@@ -20,9 +20,9 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = ProfileFragmentBinding.inflate(layoutInflater, container, false)
-        viewModel.message.observe(viewLifecycleOwner, { value ->
+        viewModel.message.observe(viewLifecycleOwner) { value ->
             binding.message.text = value
-        })
+        }
         return binding.root
     }
 

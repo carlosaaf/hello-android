@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class AuthenticatorActivity : AppCompatActivity() {
-    @Inject lateinit var authRepository: AuthRepository
+    @Inject
+    lateinit var authRepository: AuthRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

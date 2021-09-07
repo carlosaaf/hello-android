@@ -40,26 +40,27 @@ class AuthRepository @Inject constructor(
     }
 
     fun getuserInfo(callback: ApiCallback<UserInfo>) {
-        authService.getUserInfo(authToken.tokenType + " " + authToken.accessToken).enqueue(object : Callback<UserInfo?> {
-            override fun onResponse(call: Call<UserInfo?>, response: Response<UserInfo?>) {
-                when {
-                    response.isSuccessful -> {
-                        response.body()?.let { value ->
-                            callback.onSuccess(value)
+        authService.getUserInfo(authToken.tokenType + " " + authToken.accessToken)
+            .enqueue(object : Callback<UserInfo?> {
+                override fun onResponse(call: Call<UserInfo?>, response: Response<UserInfo?>) {
+                    when {
+                        response.isSuccessful -> {
+                            response.body()?.let { value ->
+                                callback.onSuccess(value)
+                            }
+                        }
+                        response.code() == 404 -> {
+                            callback.onError("Not found")
+                        }
+                        else -> {
+                            callback.onError("Unknown error ${response.message()}")
                         }
                     }
-                    response.code() == 404 -> {
-                        callback.onError("Not found")
-                    }
-                    else -> {
-                        callback.onError("Unknown error ${response.message()}")
-                    }
                 }
-            }
 
-            override fun onFailure(call: Call<UserInfo?>, t: Throwable) {
-                t.message?.let(callback::onError)
-            }
-        })
+                override fun onFailure(call: Call<UserInfo?>, t: Throwable) {
+                    t.message?.let(callback::onError)
+                }
+            })
     }
 }
